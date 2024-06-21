@@ -16,10 +16,13 @@ namespace api.Repositories
             _context = context;
         }
 
-        public async Task<List<StudentDto>> Get(){
-            var students = await _context.Students.ToListAsync();
-            var studentDtos = students.Select(student => student.ToStudentDto()).ToList();
-            return studentDtos;
+        public async Task<List<Student>> Get(){
+            var students = await _context.Students
+                .Include(s => s.StudentCourses)
+                    .ThenInclude(sc => sc.Course)
+                .ToListAsync();
+
+            return students;
         }
         public async Task<StudentDto?> GetById(int id){
             Student? student = await _context.Students.FirstOrDefaultAsync(s => s.Id == id);

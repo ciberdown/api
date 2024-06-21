@@ -1,5 +1,6 @@
 using api.Dtos.Student;
 using api.Interfaces;
+using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,10 +19,11 @@ namespace api.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Get(){
-            var res = await _studentRepo.Get();
-            if (res == null)
+            var students = await _studentRepo.Get();
+            if (students == null || students.Count == 0)
                 return NotFound();
-            return Ok(res);
+            var studentDtos = students.Select(student => student.ToStudentDto()).ToList();
+            return Ok(studentDtos);
         }
 
         [HttpGet("{id}")]

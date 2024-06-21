@@ -1,4 +1,5 @@
-using api.Models;
+
+using api.Dtos.StudentCourse;
 
 namespace api.Dtos.Student
 {
@@ -8,6 +9,6 @@ namespace api.Dtos.Student
         public string Name { get; set; }
         public string Status { get; set; } = "Ok";
         
-        public List<StudentCourse>? StudentCourses { get; set;}
+        public List<StudentCoursesDto>? StudentCourses { get; set;}
     }
 }

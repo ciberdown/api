@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Student;
+using api.Dtos.StudentCourse;
 using api.Models;
 
 namespace api.Mappers
@@ -16,7 +17,11 @@ namespace api.Mappers
                 Id = student.Id,
                 Name = student.Name, 
                 Status = student.Status,
-                StudentCourses = student.StudentCourses
+                StudentCourses = student.StudentCourses?.Select(sc => new StudentCoursesDto
+                {
+                    Course = sc.Course.ToCourseDto(),
+                    grade = sc.grade,
+                }).ToList()
             };
         }
 

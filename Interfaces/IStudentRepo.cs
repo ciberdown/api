@@ -5,7 +5,7 @@ namespace api.Interfaces
 {
     public interface IStudentRepo
     {
-        public Task<List<StudentDto>> Get();
+        public Task<List<Student>> Get();
         public Task<StudentDto?> GetById(int id);
         public Task<StudentDto?> Create(CreateStudentDto createStudentDto);
         public Task<bool> Delete(int id);
