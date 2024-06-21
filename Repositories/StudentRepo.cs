@@ -47,14 +47,20 @@ namespace api.Repositories
         }
 
         public async Task<StudentDto?> Update(int id, UpdateStudentDto updateStudentDto){
-            var founded = await _context.Students.FindAsync(id);
+            Student? founded = await _context.Students.FindAsync(id);
             if(founded == null)
                 return null;
             if(updateStudentDto.Name != null)
                 founded.Name = updateStudentDto.Name;
             if(updateStudentDto.Status != null)
                 founded.Status = updateStudentDto.Status;
-             await _context.SaveChangesAsync();
+
+            var studentProperties = typeof(UpdateStudentDto).GetProperties();
+            foreach(var property in studentProperties){
+                System.Console.WriteLine(property);
+            }
+
+            await _context.SaveChangesAsync();
             return founded.ToStudentDto();
         }
     }

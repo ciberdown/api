@@ -168,3 +168,4 @@ C:\Users\a-teymuri\Desktop\projects\dot-net\api\obj\Debug\net8.0\refint\api.dll
 C:\Users\a-teymuri\Desktop\projects\dot-net\api\obj\Debug\net8.0\api.pdb
 C:\Users\a-teymuri\Desktop\projects\dot-net\api\obj\Debug\net8.0\api.genruntimeconfig.cache
 C:\Users\a-teymuri\Desktop\projects\dot-net\api\obj\Debug\net8.0\ref\api.dll
+C:\Users\a-teymuri\Desktop\projects\dot-net\api\obj\Debug\net8.0\api.sourcelink.json
