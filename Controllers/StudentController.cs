@@ -31,7 +31,7 @@ namespace api.Controllers
             var student = await _studentRepo.GetById(id);
             if (student == null)
                 return NotFound();
-            return Ok(student);
+            return Ok(student.ToStudentDto());
         }
 
         [HttpPost]
@@ -58,7 +58,7 @@ namespace api.Controllers
             var updatedStudent = await _studentRepo.Update(id, updateStudentDto);
             if(updatedStudent == null)
                 return NotFound();
-            return Ok(updatedStudent);
+            return Ok(updatedStudent.ToStudentDto());
         }
     }
 }

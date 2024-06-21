@@ -24,12 +24,16 @@ namespace api.Repositories
 
             return students;
         }
-        public async Task<StudentDto?> GetById(int id){
-            Student? student = await _context.Students.FirstOrDefaultAsync(s => s.Id == id);
+        public async Task<Student?> GetById(int id){
+            Student? student = await _context.Students
+                .Include(s => s.StudentCourses)
+                    .ThenInclude(sc => sc.Course)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
             if(student == null)
                 return null;
 
-            return student.ToStudentDto();
+            return student;
         }
 
 
@@ -49,8 +53,12 @@ namespace api.Repositories
             return true;
         }
 
-        public async Task<StudentDto?> Update(int id, UpdateStudentDto updateStudentDto){
-            Student? founded = await _context.Students.FindAsync(id);
+        public async Task<Student?> Update(int id, UpdateStudentDto updateStudentDto){
+            Student? founded = await _context.Students
+                .Include(s => s.StudentCourses)
+                    .ThenInclude(sc => sc.Course)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
             if(founded == null)
                 return null;
             if(updateStudentDto.Name != null)
@@ -64,7 +72,7 @@ namespace api.Repositories
             }
 
             await _context.SaveChangesAsync();
-            return founded.ToStudentDto();
+            return founded;
         }
     }
 }

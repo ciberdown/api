@@ -17,11 +17,7 @@ namespace api.Mappers
                 Id = student.Id,
                 Name = student.Name, 
                 Status = student.Status,
-                StudentCourses = student.StudentCourses?.Select(sc => new StudentCoursesDto
-                {
-                    Course = sc.Course.ToCourseDto(),
-                    grade = sc.grade,
-                }).ToList()
+                StudentCourses = student.StudentCourses?.Select(sc => sc.ToStudentCourseDto()).ToList()
             };
         }
 
