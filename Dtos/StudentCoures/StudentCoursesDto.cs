@@ -4,7 +4,7 @@ namespace api.Dtos.StudentCourse
 {
     public class StudentCoursesDto
     {
-        public CourseDto Course{ get; set; }
+        public CourseInStudentDto Course{ get; set; }
         public int? grade { get; set; }
     }
 }

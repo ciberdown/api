@@ -8,7 +8,7 @@ namespace api.Mappers
         public static StudentCoursesDto ToStudentCourseDto(this StudentCourse sc){
             return new StudentCoursesDto
             {   
-                Course = sc.Course.ToCourseDto(),
+                Course = sc.Course.ToCourseInStudentDto(),
                 grade = sc.grade
             };
         }

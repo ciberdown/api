@@ -1,3 +1,4 @@
+using api.Dtos.Course;
 using api.Dtos.Student;
 using api.Models;
 
@@ -12,7 +13,7 @@ namespace api.Mappers
                 Id = student.Id,
                 Name = student.Name, 
                 Status = student.Status,
-                StudentCourses = student.StudentCourses?.Select(sc => sc.ToStudentCourseDto()).ToList()
+                StudentCourses = student.StudentCourses?.Select(sc => sc.ToStudentCourseDto()).ToList().ToStandardRes()
             };
         }
 
@@ -26,5 +27,13 @@ namespace api.Mappers
         }
 
 
+        public static CourseInStudentDto ToCourseInStudentDto(this Course course){
+            return new CourseInStudentDto
+            {
+                Id = course.Id,
+                CourseName = course.CourseName,
+                Description = course.Description
+            };
+        }
     }
 }

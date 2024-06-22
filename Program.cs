@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 //dependency injection
 builder.Services.AddScoped<IStudentRepo,StudentRepo>();
+builder.Services.AddScoped<ICourseRepo, CourseRepo>();
 
 //add controllers
 builder.Services.AddControllers();
