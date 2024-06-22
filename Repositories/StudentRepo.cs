@@ -1,5 +1,6 @@
 using api.Data;
 using api.Dtos.Student;
+using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
@@ -16,19 +17,22 @@ namespace api.Repositories
             _context = context;
         }
 
-        public async Task<List<Student>> Get(){
-            var students = await _context.Students
-                .Include(s => s.StudentCourses)
-                    .ThenInclude(sc => sc.Course)
-                .ToListAsync();
+        public async Task<List<Student>?> Get(StudentQueryObject query){
+            var students = _context.Students.Include(s => s.StudentCourses)
+                    .ThenInclude(sc => sc.Course).AsQueryable();
+                
+            if(!string.IsNullOrWhiteSpace(query.Name))
+                students = students.Where(s => s.Name.Contains(query.Name));
 
-            return students;
+            if(!string.IsNullOrWhiteSpace(query.Status))
+                students = students.Where(s => s.Status.Contains(query.Status));
+
+            return await students.ToListAsync();
         }
         public async Task<Student?> GetById(int id){
-            Student? student = await _context.Students
+            var student =await _context.Students
                 .Include(s => s.StudentCourses)
-                    .ThenInclude(sc => sc.Course)
-                .FirstOrDefaultAsync(s => s.Id == id);
+                    .ThenInclude(sc => sc.Course).FirstOrDefaultAsync(s => s.Id == id);
 
             if(student == null)
                 return null;
@@ -61,15 +65,11 @@ namespace api.Repositories
 
             if(founded == null)
                 return null;
+
             if(updateStudentDto.Name != null)
                 founded.Name = updateStudentDto.Name;
             if(updateStudentDto.Status != null)
                 founded.Status = updateStudentDto.Status;
-
-            var studentProperties = typeof(UpdateStudentDto).GetProperties();
-            foreach(var property in studentProperties){
-                System.Console.WriteLine(property);
-            }
 
             await _context.SaveChangesAsync();
             return founded;

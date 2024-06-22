@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Dtos.Student;
-using api.Dtos.StudentCourse;
 using api.Models;
 
 namespace api.Mappers
@@ -29,5 +24,7 @@ namespace api.Mappers
                 Status = DefaultStatus
             };
         }
+
+
     }
 }

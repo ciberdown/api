@@ -17,6 +17,14 @@ builder.Services.AddScoped<IStudentRepo,StudentRepo>();
 //add controllers
 builder.Services.AddControllers();
 
+//prevent json loops
+// builder.Services.AddControllers()
+//     .AddNewtonsoftJson(options =>
+//     {
+//         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+//     });
+
+
 
 //Add DbContext
 builder.Services.AddDbContext<SchoolDbContext>(options => {
