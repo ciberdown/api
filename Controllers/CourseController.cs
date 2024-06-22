@@ -1,4 +1,5 @@
 
+using api.Dtos.Course;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
@@ -34,5 +35,25 @@ namespace api.Controllers
             return Ok(course.ToCourseDto());
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            bool isDeleted = await _courseRepo.Delete(id);
+            if(!isDeleted)
+                return NotFound();
+            return NoContent();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateCourseDto createCourseDto)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var createdCourse = await _courseRepo.Create(createCourseDto);
+            if(createdCourse == null)
+                return BadRequest();
+            return CreatedAtAction(nameof(Create), new {id = createdCourse.Id}, createdCourse);
+        }
     }
 }

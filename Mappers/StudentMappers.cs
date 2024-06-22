@@ -17,7 +17,7 @@ namespace api.Mappers
             };
         }
 
-        public static Student ToCreateStudentDto(this CreateStudentDto createStudentDto)
+        public static Student ToStudent(this CreateStudentDto createStudentDto)
         {
             return new Student
             {

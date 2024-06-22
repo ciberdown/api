@@ -32,6 +32,12 @@ namespace api.Data
                 .HasOne(sc => sc.Course)
                 .WithMany(c => c.StudentCourses)
                 .HasForeignKey(sc => sc.CourseId);
+
+            //coursename is unique
+            builder.Entity<Course>()
+                .HasIndex(c => c.CourseName)
+                .IsUnique();
+                
         }
 
     }

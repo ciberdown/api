@@ -41,11 +41,13 @@ namespace api.Repositories
         }
 
 
-        public async Task<StudentDto?> Create(CreateStudentDto createStudentDto){
-            Student student = createStudentDto.ToCreateStudentDto();
-            await _context.Students.AddAsync(student);
+        public async Task<Student?> Create(CreateStudentDto createStudentDto){
+            Student student = createStudentDto.ToStudent();
+            var created = await _context.Students.AddAsync(student);
+            if(created == null)
+                return null;
             await _context.SaveChangesAsync();
-            return student.ToStudentDto();
+            return student;
         }
 
         public async Task<bool> Delete(int id){

@@ -11,6 +11,7 @@ namespace api.Mappers
         public static CourseDto ToCourseDto(this Course course){
             return new CourseDto
             {
+                Id = course.Id,
                 CourseName = course.CourseName,
                 Description = course.Description,
                 StudentCourses = course.StudentCourses.Select(s => s.ToScInCourseDto()).ToList().ToStandardRes()
@@ -32,6 +33,15 @@ namespace api.Mappers
                 Id = student.Id,
                 Name = student.Name, 
                 Status = student.Status,
+            };
+        }
+
+        public static Course ToCourse(this CreateCourseDto createCourseDto)
+        {
+            return new Course
+            {        
+                CourseName = createCourseDto.CourseName,
+                Description = createCourseDto.Description
             };
         }
     }

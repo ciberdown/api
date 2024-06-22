@@ -8,7 +8,7 @@ namespace api.Interfaces
     {
         public Task<List<Student>?> Get(StudentQueryObject query);
         public Task<Student?> GetById(int id);
-        public Task<StudentDto?> Create(CreateStudentDto createStudentDto);
+        public Task<Student?> Create(CreateStudentDto createStudentDto);
         public Task<bool> Delete(int id);
         public Task<Student?> Update(int id, UpdateStudentDto updateStudentDto);
     }
