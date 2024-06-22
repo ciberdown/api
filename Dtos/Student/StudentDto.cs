@@ -9,6 +9,6 @@ namespace api.Dtos.Student
         public string Name { get; set; }
         public string Status { get; set; } = "Ok";
         
-        public StandardResDto<StudentCoursesDto> StudentCourses { get; set;}
+        public StandardResDto<StudentCoursesInStudentDto> StudentCourses { get; set;}
     }
 }

@@ -194,8 +194,9 @@ public async Task<List<Student>?> Get(StudentQueryObject query){
 
 
 //handle reference loop (Newtonsoft.Json)
-services.AddControllers()
+//dotnet add package Microsoft.AspNetCore.Mvc.NewtonsoftJson
+builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
-        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });

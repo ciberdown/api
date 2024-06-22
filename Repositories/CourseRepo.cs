@@ -62,5 +62,22 @@ namespace api.Repositories
             await _context.SaveChangesAsync();
             return course;
         }
+
+        public async Task<Course?> Update(int id, UpdateCourseDto updateCourseDto)
+        {
+            var founded =await _context.Courses
+                .Include(c => c.StudentCourses)
+                .ThenInclude(sc => sc.Student)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if(founded == null)
+                return null;
+            if(updateCourseDto.CourseName != null)
+                founded.CourseName = updateCourseDto.CourseName;
+            if(updateCourseDto.Description != null)
+                founded.Description = updateCourseDto.Description;
+
+            await _context.SaveChangesAsync();
+            return founded;
+        }
     }
 }

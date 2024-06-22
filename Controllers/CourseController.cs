@@ -35,7 +35,7 @@ namespace api.Controllers
             return Ok(course.ToCourseDto());
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             bool isDeleted = await _courseRepo.Delete(id);
@@ -54,6 +54,16 @@ namespace api.Controllers
             if(createdCourse == null)
                 return BadRequest();
             return CreatedAtAction(nameof(Create), new {id = createdCourse.Id}, createdCourse);
+        }
+
+        [HttpPatch("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCourseDto updateCourseDto)
+        {
+            
+            var updatedCourse = await _courseRepo.Update(id,updateCourseDto);
+            if(updatedCourse == null)
+                return NotFound();
+            return Ok(updatedCourse.ToCourseDto());
         }
     }
 }

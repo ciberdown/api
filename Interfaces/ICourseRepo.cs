@@ -14,6 +14,7 @@ namespace api.Interfaces
         public Task<Course?> GetById(int id);
         public Task<bool> Delete(int id);
         public Task<Course?> Create(CreateCourseDto createCourseDto);
+        public Task<Course?> Update(int id, UpdateCourseDto updateCourseDto);
 
     }
 }

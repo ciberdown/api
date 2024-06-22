@@ -3,6 +3,7 @@ using api.Data;
 using api.Interfaces;
 using api.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,16 +15,18 @@ builder.Services.AddSwaggerGen();
 //dependency injection
 builder.Services.AddScoped<IStudentRepo,StudentRepo>();
 builder.Services.AddScoped<ICourseRepo, CourseRepo>();
+builder.Services.AddScoped<ISCRepo,SCRepo>();
 
 //add controllers
 builder.Services.AddControllers();
 
 //prevent json loops
-// builder.Services.AddControllers()
-//     .AddNewtonsoftJson(options =>
-//     {
-//         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-//     });
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    });
+
 
 
 
