@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.StudentCoures;
 using api.Helpers;
 using api.Interfaces;
 using api.Models;
@@ -27,14 +28,28 @@ namespace api.Repositories
                 studentCourse = studentCourse.Where(sc => sc.CourseId == query.CourseId);
             if(query.StudentId != null)
                 studentCourse = studentCourse.Where(sc => sc.StudentId == query.StudentId);
-            if(query.grade != null)
-                studentCourse = studentCourse.Where(sc => sc.grade == query.grade);
+            if(query.Grade != null)
+                studentCourse = studentCourse.Where(sc => sc.Grade == query.Grade);
             
             studentCourse = studentCourse
                 .Include(sc => sc.Student)
                 .Include(sc => sc.Course);
 
             return await studentCourse.ToListAsync();
+        }
+
+        public async Task<StudentCourse?> Update(UpdateSCDto updateSCDto)
+        {
+            var founded = await _context.StudentCourses
+                .Include(s => s.Student)
+                .Include(s => s.Course)
+                .FirstOrDefaultAsync(sc => sc.StudentId == updateSCDto.StudentId && sc.CourseId == updateSCDto.CourseId);
+            if(founded == null)
+                return null;
+            
+            founded.Grade = updateSCDto.Grade;
+            await _context.SaveChangesAsync();
+            return founded;
         }
     }
 }

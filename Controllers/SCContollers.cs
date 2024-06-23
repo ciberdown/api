@@ -1,5 +1,6 @@
 
 
+using api.Dtos.StudentCoures;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
@@ -24,7 +25,22 @@ namespace api.Controllers
             var sc = await _sCRepo.Get(query);
             if (sc == null)
                 return NotFound();
-            return Ok(sc.ToStandardRes());
+            var res = sc.Select(sc => sc.ToSCDto()).ToList().ToStandardRes();
+            return Ok(res);
         }
+
+        [HttpPatch("grade")]
+        public async Task<ActionResult> Update([FromBody] UpdateSCDto updateSCDto)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var updated = await _sCRepo.Update(updateSCDto);
+            if (updated == null)
+                return NotFound();
+            
+            return Ok(updated.ToSCDto());
+        }
+
+        
     }
 }

@@ -5,6 +5,6 @@ namespace api.Dtos.StudentCourse
     public class StudentCoursesInStudentDto
     {
         public CourseInStudentDto Course{ get; set; }
-        public int? grade { get; set; }
+        public int? Grade { get; set; }
     }
 }

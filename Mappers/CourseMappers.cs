@@ -23,7 +23,7 @@ namespace api.Mappers
             {
                 StudentId = sc.StudentId,
                 Student = sc.Student.ToStudentInCourseDto(),
-                grade = sc.grade
+                Grade = sc.Grade
             };
         }
         public static StudentInCourseDto ToStudentInCourseDto(this Student student)

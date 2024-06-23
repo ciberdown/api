@@ -10,6 +10,6 @@ namespace api.Helpers
         public int? StudentId { get; set; }
 
         public int? CourseId { get; set; }
-        public int? grade { get; set; }
+        public int? Grade { get; set; }
     }
 }

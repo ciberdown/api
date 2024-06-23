@@ -1,17 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace api.Dtos.StudentCoures
 {
     public class StudentCourseDto
     {
+        [Required]
         public int StudentId { get; set; }
-        public Models.Student Student { get; set; }
-
+        [Required]
+        [MaxLength(50)]
+        public string Name { get; set; }
+        [MaxLength(50)]
+        public string StudentStatus { get; set; } = "Ok";
+        [Required]
         public int CourseId { get; set; }
-        public Models.Course Course{ get; set; }
-        public int? grade { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string CourseName { get; set; }
+        [Required]
+        [MaxLength(500)]
+        public string? CourseDescription { get; set; }
+        [Range(0,20)]
+        public int? Grade { get; set; }
     }
 }
