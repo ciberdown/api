@@ -1,5 +1,7 @@
 
 
+using api;
+using api.Controllers;
 using api.Data;
 using api.Interfaces;
 using api.Repositories;
@@ -36,6 +38,12 @@ builder.Services.AddDbContext<SchoolDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// Register controllers as services
+builder.Services.AddScoped<StudentController>();
+builder.Services.AddScoped<CourseController>();
+builder.Services.AddScoped<SCContoller>();
+builder.Services.AddScoped<SchoolDbContext>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,6 +57,30 @@ app.UseHttpsRedirection();
 
 //map controllers routes to the endpoints
 app.MapControllers();
+
+// Run the seed data
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    // Get instances of the controllers
+    var studentController = services.GetRequiredService<StudentController>();
+    var courseController = services.GetRequiredService<CourseController>();
+    var studentCourseController = services.GetRequiredService<SCContoller>();
+
+
+    // Instantiate and run the Seed class
+    var seed = new Seed(studentController, courseController, studentCourseController);
+    try
+    {
+        await seed.SeedData();
+    }
+    catch (System.Exception)
+    {
+        
+        System.Console.WriteLine("seed data error");
+    }
+}
 
 app.Run();
 

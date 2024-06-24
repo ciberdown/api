@@ -31,7 +31,7 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        public async Task<ApiResDto<StudentCourseDto>> Post([FromBody] CreateScDto createDto){
+        public async Task<ApiResDto<StudentCourseDto>> Create([FromBody] CreateScDto createDto){
             if(!ModelState.IsValid)
                 return new ApiResDto<StudentCourseDto>("bad request");
 
