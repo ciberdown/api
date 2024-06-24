@@ -13,7 +13,7 @@ namespace api.Mappers
                 Id = student.Id,
                 Name = student.Name, 
                 Status = student.Status,
-                StudentCourses = student.StudentCourses?.Select(sc => sc.ToStudentCourseDto()).ToList().ToStandardRes()
+                Courses = student.StudentCourses?.Select(sc => sc.ToStudentCourseDto()).ToList().ToStandardRes()
             };
         }
 

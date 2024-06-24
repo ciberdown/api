@@ -14,15 +14,18 @@ namespace api.Mappers
                 Id = course.Id,
                 CourseName = course.CourseName,
                 Description = course.Description,
-                StudentCourses = course.StudentCourses.Select(s => s.ToScInCourseDto()).ToList().ToStandardRes()
+                Students = course.StudentCourses.Select(s => s.ToScInCourseDto()).ToList().ToStandardRes(),
+                CreationDate = course.CreationDate,
+                StartDate = course.StartDate,
             };
         }
 
         public static SCinCourseDto ToScInCourseDto(this StudentCourse sc){
             return new SCinCourseDto
             {
-                StudentId = sc.StudentId,
-                Student = sc.Student.ToStudentInCourseDto(),
+                Id = sc.StudentId,
+                Name = sc.Student.Name,
+                Status = sc.Student.Status,
                 Grade = sc.Grade
             };
         }
@@ -41,7 +44,9 @@ namespace api.Mappers
             return new Course
             {        
                 CourseName = createCourseDto.CourseName,
-                Description = createCourseDto.Description
+                Description = createCourseDto.Description,
+                CreationDate = DateTime.Now,
+                StartDate = createCourseDto.StartDate,
             };
         }
     }

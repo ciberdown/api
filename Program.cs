@@ -1,4 +1,5 @@
 
+
 using api.Data;
 using api.Interfaces;
 using api.Repositories;
@@ -27,8 +28,8 @@ builder.Services.AddControllers()
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
 
-
-
+if(args != null && args.Count() > 0)
+    System.Console.WriteLine("args[0]: "+args[0]);
 
 //Add DbContext
 builder.Services.AddDbContext<SchoolDbContext>(options => {

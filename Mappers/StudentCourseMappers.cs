@@ -20,7 +20,9 @@ namespace api.Mappers
         public static StudentCoursesInStudentDto ToStudentCourseDto(this StudentCourse sc){
             return new StudentCoursesInStudentDto
             {   
-                Course = sc.Course.ToCourseInStudentDto(),
+                Id = sc.Course.Id,
+                Name = sc.Course.CourseName,
+                Description = sc.Course.Description,
                 Grade = sc.Grade
             };
         }
