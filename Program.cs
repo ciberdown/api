@@ -30,8 +30,7 @@ builder.Services.AddControllers()
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
 
-if(args != null && args.Count() > 0)
-    System.Console.WriteLine("args[0]: "+args[0]);
+    
 
 //Add DbContext
 builder.Services.AddDbContext<SchoolDbContext>(options => {
@@ -58,27 +57,36 @@ app.UseHttpsRedirection();
 //map controllers routes to the endpoints
 app.MapControllers();
 
-// Run the seed data
-using (var scope = app.Services.CreateScope())
+// Seed Database if the argument is provided
+if (args != null && args.Length > 0 && args[0] == "seed")
 {
-    var services = scope.ServiceProvider;
+    await SeedDatabase(app);
+    return;
+}
 
-    // Get instances of the controllers
-    var studentController = services.GetRequiredService<StudentController>();
-    var courseController = services.GetRequiredService<CourseController>();
-    var studentCourseController = services.GetRequiredService<SCContoller>();
-
-
-    // Instantiate and run the Seed class
-    var seed = new Seed(studentController, courseController, studentCourseController);
-    try
+// Run the seed data(dotnet run seed)
+async Task SeedDatabase(WebApplication app)
+{
+    using (var scope = app.Services.CreateScope())
     {
+        try
+        {
+            var services = scope.ServiceProvider;
+
+        // Get instances of the controllers
+        var studentController = services.GetRequiredService<StudentController>();
+        var courseController = services.GetRequiredService<CourseController>();
+        var studentCourseController = services.GetRequiredService<SCContoller>();
+
+        // Instantiate and run the Seed class
+        var seed = new Seed(studentController, courseController, studentCourseController);
         await seed.SeedData();
-    }
-    catch (System.Exception)
-    {
-        
-        System.Console.WriteLine("seed data error");
+        }
+        catch (Exception es)
+        {
+
+            throw es;
+        }
     }
 }
 
