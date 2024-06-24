@@ -1,5 +1,6 @@
 
 
+using api.Dtos;
 using api.Dtos.StudentCoures;
 using api.Helpers;
 using api.Interfaces;
@@ -20,27 +21,46 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Get([FromQuery] SCObjectQuery query)
+        public async Task<ApiResDto<CountedResDto<StudentCourseDto>>> Get([FromQuery] SCObjectQuery query)
         {
             var sc = await _sCRepo.Get(query);
             if (sc == null)
-                return NotFound();
-            var res = sc.Select(sc => sc.ToSCDto()).ToList().ToStandardRes();
-            return Ok(res);
+                return new ApiResDto<CountedResDto<StudentCourseDto>>("bad request");
+            var res = sc.Select(sc => sc.ToSCDto()).ToList().ToCountedResDto();
+            return new ApiResDto<CountedResDto<StudentCourseDto>>(res);
+        }
+
+        [HttpPost]
+        public async Task<ApiResDto<StudentCourseDto>> Post([FromBody] CreateScDto createDto){
+            if(!ModelState.IsValid)
+                return new ApiResDto<StudentCourseDto>("bad request");
+
+            var sc = await _sCRepo.Create(createDto);
+
+            if (sc == null)
+                return new ApiResDto<StudentCourseDto>("bad request");
+
+            var query = new SCObjectQuery{StudentId = sc.StudentId, CourseId = sc.CourseId};
+
+            var scDto = await Get(query);
+            if(scDto?.Body?.Items[0] == null)
+                return new ApiResDto<StudentCourseDto>("bad request");
+
+            return new ApiResDto<StudentCourseDto>(scDto?.Body?.Items[0]);
         }
 
         [HttpPatch("grade")]
-        public async Task<ActionResult> Update([FromBody] UpdateSCDto updateSCDto)
+        public async Task<ApiResDto<StudentCourseDto>> Update([FromBody] UpdateSCDto updateSCDto)
         {
             if(!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return new ApiResDto<StudentCourseDto>("bad request");
+
             var updated = await _sCRepo.Update(updateSCDto);
             if (updated == null)
-                return NotFound();
-            
-            return Ok(updated.ToSCDto());
-        }
+                return new ApiResDto<StudentCourseDto>("bad request");
 
-        
+            
+            return new ApiResDto<StudentCourseDto>(updated.ToSCDto());
+        }
     }
 }

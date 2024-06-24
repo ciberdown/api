@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Models
+namespace api.Dtos.StudentCoures
 {
-    public class StudentCourse
+    public class CreateScDto
     {
+        [Required]
         public int StudentId { get; set; }
-        public Student Student { get; set; }
 
+        [Required]
         public int CourseId { get; set; }
-        public Course Course{ get; set; }
-        
+        [Range(0, 20)]
         public int? Grade { get; set; }
     }
 }

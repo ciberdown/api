@@ -1,4 +1,5 @@
 
+using api.Dtos;
 using api.Dtos.Course;
 using api.Helpers;
 using api.Interfaces;
@@ -19,20 +20,20 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] CourseQueryObject query){
-            var courses =await _courseRepo.Get(query);
+        public async Task<ApiResDto<CountedResDto<CourseDto>>> Get([FromQuery] CourseQueryObject query){
+            var courses = await _courseRepo.Get(query);
             var coursesDto = courses.Select(c => c.ToCourseDto()).ToList();
 
-            return Ok(coursesDto.ToStandardRes());
+            return new ApiResDto<CountedResDto<CourseDto>>(coursesDto.ToCountedResDto());
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ApiResDto<CourseDto>> GetById(int id)
         {
             var course = await _courseRepo.GetById(id);
             if(course==null)
-                return NotFound();
-            return Ok(course.ToCourseDto());
+                return new ApiResDto<CourseDto>("not found");
+            return new ApiResDto<CourseDto>(course.ToCourseDto());
         }
 
         [HttpDelete("{id:int}")]
@@ -45,15 +46,19 @@ namespace api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCourseDto createCourseDto)
+        public async Task<ApiResDto<CourseDto>> Create([FromBody] CreateCourseDto createCourseDto)
         {
             if(!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return new ApiResDto<CourseDto>("body not found");
 
             var createdCourse = await _courseRepo.Create(createCourseDto);
+
             if(createdCourse == null)
-                return BadRequest();
-            return CreatedAtAction(nameof(Create), new {id = createdCourse.Id}, createdCourse);
+                return new ApiResDto<CourseDto>("bad request");
+
+            var result = await _courseRepo.GetById(createdCourse.Id);
+            
+            return new ApiResDto<CourseDto>(result.ToCourseDto());
         }
 
         [HttpPatch("{id:int}")]

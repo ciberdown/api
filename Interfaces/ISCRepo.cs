@@ -12,6 +12,7 @@ namespace api.Interfaces
     {
         public Task<List<StudentCourse>?> Get(SCObjectQuery query);
         public Task<StudentCourse?> Update(UpdateSCDto updateSCDto);
+        public Task<StudentCourse?> Create(CreateScDto createDto);
 
     }
 }

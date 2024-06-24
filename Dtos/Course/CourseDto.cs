@@ -10,6 +10,6 @@ namespace api.Dtos.Course
         public DateTime CreationDate { get; set; }
         public DateTime? StartDate { get; set; }
         
-        public StandardResDto<SCinCourseDto>? Students{ get; set; }
+        public CountedResDto<SCinCourseDto>? Students{ get; set; }
     }
 }

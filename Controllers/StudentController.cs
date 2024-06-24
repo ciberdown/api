@@ -1,3 +1,4 @@
+using api.Dtos;
 using api.Dtos.Student;
 using api.Helpers;
 using api.Interfaces;
@@ -18,32 +19,34 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] StudentQueryObject query){
+        public async Task<ApiResDto<CountedResDto<StudentDto>>> Get([FromQuery] StudentQueryObject query){
             var students = await _studentRepo.Get(query);
             if (students == null || students.Count == 0)
-                return NotFound();
+                return new ApiResDto<CountedResDto<StudentDto>>("not found!");
             var studentDtos = students.Select(student => student.ToStudentDto()).ToList();
-            return Ok(studentDtos.ToStandardRes());
+            return new ApiResDto<CountedResDto<StudentDto>>(studentDtos.ToCountedResDto());
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetById([FromRoute]int id){
+        public async Task<ApiResDto<StudentDto>> GetById([FromRoute]int id){
             var student = await _studentRepo.GetById(id);
             if (student == null)
-                return NotFound();
-            return Ok(student.ToStudentDto());
+                return new ApiResDto<StudentDto>("not found!");
+
+            return new ApiResDto<StudentDto>(student.ToStudentDto());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateStudentDto createStudentDto){
-            if(!ModelState.IsValid)
-                return BadRequest(ModelState);
-            if(createStudentDto == null)
-                return BadRequest();
+        public async Task<ApiResDto<StudentDto>> Create([FromBody] CreateStudentDto createStudentDto){
+             if(!ModelState.IsValid)
+                 return new ApiResDto<StudentDto>("bad request");
+            // if(createStudentDto == null)
+            //     return BadRequest();
             var createdStudent = await _studentRepo.Create(createStudentDto);
-            if(createdStudent == null)
-                return BadRequest();
-            return CreatedAtAction(nameof(Create), new {id = createdStudent.Id}, createdStudent);
+            // if(createdStudent == null)
+            //     return BadRequest();
+            var result = await GetById(createdStudent.Id);
+            return result;
         } 
 
         [HttpDelete("{id:int}")]
@@ -56,13 +59,14 @@ namespace api.Controllers
         }
 
         [HttpPatch("{id:int}")]
-        public async Task<IActionResult> Update([FromRoute] int id, UpdateStudentDto updateStudentDto){
+        public async Task<ApiResDto<StudentDto>> Update([FromRoute] int id, UpdateStudentDto updateStudentDto){
             if(!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return new ApiResDto<StudentDto>("bad request");
             var updatedStudent = await _studentRepo.Update(id, updateStudentDto);
             if(updatedStudent == null)
-                return NotFound();
-            return Ok(updatedStudent.ToStudentDto());
+                return new ApiResDto<StudentDto>("not found!");
+
+            return new ApiResDto<StudentDto>(updatedStudent.ToStudentDto());
         }
     }
 }

@@ -4,8 +4,8 @@ namespace api.Mappers
 {
     public static class StandardResMapper
     {
-        public static StandardResDto<T> ToStandardRes<T>(this List<T> list){
-            return new StandardResDto<T>
+        public static CountedResDto<T> ToCountedResDto<T>(this List<T> list){
+            return new CountedResDto<T>
             {
                 TotalCount = list.Count,
                 Items = list

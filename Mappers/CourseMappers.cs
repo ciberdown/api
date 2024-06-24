@@ -14,7 +14,7 @@ namespace api.Mappers
                 Id = course.Id,
                 CourseName = course.CourseName,
                 Description = course.Description,
-                Students = course.StudentCourses.Select(s => s.ToScInCourseDto()).ToList().ToStandardRes(),
+                Students = course.StudentCourses.Select(s => s.ToScInCourseDto()).ToList().ToCountedResDto(),
                 CreationDate = course.CreationDate,
                 StartDate = course.StartDate,
             };

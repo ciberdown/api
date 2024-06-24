@@ -6,6 +6,7 @@ using api.Data;
 using api.Dtos.StudentCoures;
 using api.Helpers;
 using api.Interfaces;
+using api.Mappers;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,6 +51,22 @@ namespace api.Repositories
             founded.Grade = updateSCDto.Grade;
             await _context.SaveChangesAsync();
             return founded;
+        }
+
+        public async Task<StudentCourse?> Create(CreateScDto createDto)
+        {
+            StudentCourse studentCourse = createDto.ToStudentCourse();
+            await _context.StudentCourses
+                .AddAsync(studentCourse);
+
+            //if(created != null)
+            //    return null;
+             var result = await _context.SaveChangesAsync();
+
+             if(result <= 0){
+                return null;
+             }
+            return studentCourse;
         }
     }
 }

@@ -26,5 +26,13 @@ namespace api.Mappers
                 Grade = sc.Grade
             };
         }
+        public static StudentCourse ToStudentCourse(this CreateScDto scCreate){
+            return new StudentCourse
+            {
+                StudentId = scCreate.StudentId,
+                CourseId = scCreate.CourseId,
+                Grade = scCreate.Grade
+            };
+        }
     }
 }
