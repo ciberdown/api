@@ -7,13 +7,21 @@ using api.Interfaces;
 using api.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using DotNetEnv;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+//load .env file
+Env.Load();
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllersWithViews();
+
 
 //dependency injection
 builder.Services.AddScoped<IStudentRepo,StudentRepo>();
@@ -22,6 +30,7 @@ builder.Services.AddScoped<ISCRepo,SCRepo>();
 
 //add controllers
 builder.Services.AddControllers();
+
 
 //prevent json loops
 builder.Services.AddControllers()
@@ -32,9 +41,12 @@ builder.Services.AddControllers()
 
     
 
+var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
 //Add DbContext
 builder.Services.AddDbContext<SchoolDbContext>(options => {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(connectionString
+        // builder.Configuration.GetConnectionString("AzureSSMSConnection")
+    );
 });
 
 // Register controllers as services
