@@ -3,6 +3,7 @@ using api.Dtos.Student;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
+using api.src.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -19,12 +20,12 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<ApiResDto<CountedResDto<StudentDto>>> Get([FromQuery] StudentQueryObject query){
+        public async Task<ApiListResDto<StudentDto>> Get([FromQuery] StudentQueryObject query){
             var students = await _studentRepo.Get(query);
             if (students == null || students.Count == 0)
-                return new ApiResDto<CountedResDto<StudentDto>>("not found!");
+                return new ApiListResDto<StudentDto>("not found!");
             var studentDtos = students.Select(student => student.ToStudentDto()).ToList();
-            return new ApiResDto<CountedResDto<StudentDto>>(studentDtos.ToCountedResDto());
+            return new ApiListResDto<StudentDto>(studentDtos);
         }
 
         [HttpGet("{id:int}")]

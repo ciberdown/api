@@ -1,35 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+using api.Dtos;
 
-namespace api.Dtos
+namespace api.src.Dtos
 {
-    public class ApiResDto<T>
+    public class ApiResDto<T> : AbstactApiResDto<T> 
     where T : class
     {
-        public bool IsSuccess { get; set; }
-        public string? Error { get; set; }
         public T? Body { get; set; }
 
-        public ApiResDto(T? body)
+        public ApiResDto(T body)
         {
-            IsSuccess = body != null;
-            Error = body == null ? "data empty error" : null;
-            Body = body;
+            if(body != null)
+            {
+                Body = body;
+                CleanError();
+            }
+            else
+                AddError("body is null");
         }
 
-        public ApiResDto(string errorText)
+        public ApiResDto(string errorMessage)
         {
-            IsSuccess = false;
-            Error = errorText;
-            Body = null;
-        }
-
-        private Exception ThrowError(string message){
-            return new Exception(message);
+            AddError(errorMessage);
         }
     }
 }

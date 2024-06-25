@@ -4,6 +4,7 @@ using api.Dtos.Course;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
+using api.src.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -20,11 +21,11 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<ApiResDto<CountedResDto<CourseDto>>> Get([FromQuery] CourseQueryObject query){
+        public async Task<ApiListResDto<CourseDto>> Get([FromQuery] CourseQueryObject query){
             var courses = await _courseRepo.Get(query);
             var coursesDto = courses.Select(c => c.ToCourseDto()).ToList();
 
-            return new ApiResDto<CountedResDto<CourseDto>>(coursesDto.ToCountedResDto());
+            return new ApiListResDto<CourseDto>(coursesDto);
         }
 
         [HttpGet("{id:int}")]

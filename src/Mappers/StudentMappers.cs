@@ -1,3 +1,4 @@
+using api.Dtos;
 using api.Dtos.Course;
 using api.Dtos.Student;
 using api.Models;

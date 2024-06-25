@@ -5,6 +5,7 @@ using api.Dtos.StudentCoures;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
+using api.src.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -21,13 +22,14 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<ApiResDto<CountedResDto<StudentCourseDto>>> Get([FromQuery] SCObjectQuery query)
+        public async Task<ApiListResDto<StudentCourseDto>> Get([FromQuery] SCObjectQuery query)
         {
             var sc = await _sCRepo.Get(query);
             if (sc == null)
-                return new ApiResDto<CountedResDto<StudentCourseDto>>("bad request");
-            var res = sc.Select(sc => sc.ToSCDto()).ToList().ToCountedResDto();
-            return new ApiResDto<CountedResDto<StudentCourseDto>>(res);
+                return new ApiListResDto<StudentCourseDto>("bad request");
+            var res = sc.Select(sc => sc.ToSCDto()).ToList();
+            return new ApiListResDto<StudentCourseDto>(res);
+
         }
 
         [HttpPost]
@@ -45,7 +47,6 @@ namespace api.Controllers
             var scDto = await Get(query);
             if(scDto?.Body?.Items[0] == null)
                 return new ApiResDto<StudentCourseDto>("bad request");
-
             return new ApiResDto<StudentCourseDto>(scDto?.Body?.Items[0]);
         }
 
