@@ -6,6 +6,7 @@ using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.src.Dtos;
+using api.src.Dtos.StudentCoures;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -62,6 +63,15 @@ namespace api.Controllers
 
             
             return new ApiResDto<StudentCourseDto>(updated.ToSCDto());
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] DeleteSCDto deleteSCDto)
+        {
+            bool isDeleted = await _sCRepo.Delete(deleteSCDto);
+            if(isDeleted == false)
+                return NotFound();
+            return NoContent();
         }
     }
 }

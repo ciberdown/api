@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.StudentCoures;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using api.src.Dtos.StudentCoures;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -68,5 +65,18 @@ namespace api.Repositories
              }
             return studentCourse;
         }
+
+        public async Task<bool> Delete(DeleteSCDto deleteSCDto)
+        {
+            var founded = await  _context.StudentCourses
+                .FirstOrDefaultAsync(sc => sc.StudentId == deleteSCDto.StudentId
+                 && sc.CourseId == deleteSCDto.CourseId);
+            if(founded == null)
+                return false;
+            _context.Remove(founded);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }
