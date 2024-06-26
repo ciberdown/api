@@ -11,5 +11,7 @@ namespace api.Helpers
 
         public int? CourseId { get; set; }
         public int? Grade { get; set; }
+        public int? SkipCount { get; set; }
+        public int? MaxResultCount { get; set; }
     }
 }

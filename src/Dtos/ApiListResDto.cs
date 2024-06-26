@@ -6,11 +6,11 @@ namespace api.src.Dtos
     {
         public CountedResDto<T>? Body { get; set; }
 
-        public ApiListResDto(List<T> list)
-        {
+        public ApiListResDto(List<T> list, int? SkipCount = null, int? MaxResultCount = null)
+        {   
             if(list != null)
             {
-                Body = list.ToCountedResDto();
+                Body = list.ToCountedResDto(SkipCount,MaxResultCount);
                 CleanError();
             }
             else

@@ -1,6 +1,7 @@
 using api.Dtos;
 using api.Dtos.Course;
 using api.Dtos.Student;
+using api.Helpers;
 using api.Models;
 
 namespace api.Mappers
@@ -14,7 +15,7 @@ namespace api.Mappers
                 Id = student.Id,
                 Name = student.Name, 
                 Status = student.Status,
-                Courses = student.StudentCourses?.Select(sc => sc.ToStudentCourseDto()).ToList().ToCountedResDto()
+                Courses = student.StudentCourses?.Select(sc => sc.ToStudentCourseDto()).ToList().ToCountedResDto(),
             };
         }
 

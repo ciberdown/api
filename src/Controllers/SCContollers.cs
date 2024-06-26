@@ -29,7 +29,7 @@ namespace api.Controllers
             if (sc == null)
                 return new ApiListResDto<StudentCourseDto>("bad request");
             var res = sc.Select(sc => sc.ToSCDto()).ToList();
-            return new ApiListResDto<StudentCourseDto>(res);
+            return new ApiListResDto<StudentCourseDto>(res, query.SkipCount, query.MaxResultCount);
 
         }
 

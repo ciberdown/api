@@ -9,5 +9,7 @@ namespace api.Helpers
     {
         public string? CourseName { get; set; }
         public string? Description { get; set; }
+        public int? SkipCount { get; set; }
+        public int? MaxResultCount { get; set; }
     }
 }

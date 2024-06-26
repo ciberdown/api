@@ -25,7 +25,7 @@ namespace api.Controllers
             if (students == null || students.Count == 0)
                 return new ApiListResDto<StudentDto>("not found!");
             var studentDtos = students.Select(student => student.ToStudentDto()).ToList();
-            return new ApiListResDto<StudentDto>(studentDtos);
+            return new ApiListResDto<StudentDto>(studentDtos,query.SkipCount, query.MaxResultCount);
         }
 
         [HttpGet("{id:int}")]

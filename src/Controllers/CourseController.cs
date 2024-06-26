@@ -1,5 +1,4 @@
 
-using api.Dtos;
 using api.Dtos.Course;
 using api.Helpers;
 using api.Interfaces;
@@ -25,7 +24,7 @@ namespace api.Controllers
             var courses = await _courseRepo.Get(query);
             var coursesDto = courses.Select(c => c.ToCourseDto()).ToList();
 
-            return new ApiListResDto<CourseDto>(coursesDto);
+            return new ApiListResDto<CourseDto>(coursesDto, query.SkipCount,query.MaxResultCount);
         }
 
         [HttpGet("{id:int}")]
