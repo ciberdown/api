@@ -42,11 +42,13 @@ builder.Services.AddControllers()
     
 
 var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+var connectionType = Environment.GetEnvironmentVariable("ConnectionType");
 //Add DbContext
 builder.Services.AddDbContext<SchoolDbContext>(options => {
-    options.UseSqlServer(connectionString
-        // builder.Configuration.GetConnectionString("AzureSSMSConnection")
-    );
+    if(connectionType == "SSMS")
+        options.UseSqlServer(connectionString);
+    else if(connectionType == "AzureSqlServer")
+        options.UseSqlServer(connectionString);
 });
 
 // Register controllers as services
