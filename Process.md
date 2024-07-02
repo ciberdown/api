@@ -200,3 +200,14 @@ builder.Services.AddControllers()
     {
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
+
+
+
+//AutoMapper=======================================================
+//add NuGet
+AutoMapper.Microsoft.Extensions.dependencyInjection
+
+//register in program.cs
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
